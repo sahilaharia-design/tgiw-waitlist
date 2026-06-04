@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Great Indian Wedding — Join the Waitlist</title>
-<meta name="description" content="A Great Indian Wedding Experience At Home. Join the waitlist for the most anticipated experience of the year.">
+<title>The Great Indian Wedding — Dubai · October 2026 | Join the Waitlist</title>
+<meta name="description" content="Coming to Dubai, October 2026. A Great Indian Wedding Experience. Lock in your founding price — only 500 spots available.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -407,6 +407,27 @@ section{position:relative;overflow:hidden;}
 .tier-card.vip .tier-btn:hover,.tier-card.vip.selected .tier-btn{
   background:var(--gold);color:var(--ink);border-color:var(--gold);
 }
+.tier-price{
+  display:flex;align-items:baseline;gap:4px;margin-bottom:6px;
+}
+.tier-price-amount{
+  font-family:'Caveat',cursive;font-weight:700;font-size:38px;
+  color:var(--gold);line-height:1;
+}
+.tier-price-currency{
+  font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;
+  color:#8a6010;font-weight:700;margin-bottom:3px;
+}
+.tier-avail{
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--red);margin-bottom:22px;
+  display:flex;align-items:center;gap:5px;
+}
+.tier-avail::before{
+  content:'';display:inline-block;width:5px;height:5px;
+  border-radius:50%;background:var(--red);animation:blink 1.6s ease infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
 /* ===== RSVP ===== */
 #rsvp{
@@ -667,7 +688,7 @@ footer{
   <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-vignette"></div>
   <div class="hero-body">
-    <p class="hero-eyebrow">The Great Indian Wedding — Coming Soon</p>
+    <p class="hero-eyebrow">The Great Indian Wedding — Dubai · October 2026</p>
     <h1 class="hero-hl">
       Some weddings you attend.
       <em>This one, you enter.</em>
@@ -690,7 +711,7 @@ footer{
     <span class="m-line" data-reveal>It was never about the wedding.</span>
     <div class="m-rule" data-reveal></div>
     <span class="m-line bold" data-reveal>It was about everyone who showed up.</span>
-    <p class="m-foot" data-reveal>The Great Indian Wedding · An experience at home</p>
+    <p class="m-foot" data-reveal>The Great Indian Wedding · Dubai · October 2026</p>
   </div>
 </section>
 
@@ -741,17 +762,17 @@ footer{
       <div class="q" data-reveal>
         <div class="q-mark">"</div>
         <p class="q-text">I cried. At a waitlist.</p>
-        <p class="q-attr">— first 500</p>
+        <p class="q-attr">— founding guest · Dubai</p>
       </div>
       <div class="q" data-reveal>
         <div class="q-mark">"</div>
-        <p class="q-text">Sent it to my entire family group. All 47 of them.</p>
-        <p class="q-attr">— a future guest</p>
+        <p class="q-text">Sent it to my entire family group chat. All 47 of them.</p>
+        <p class="q-attr">— future guest · Abu Dhabi</p>
       </div>
       <div class="q" data-reveal>
         <div class="q-mark">"</div>
         <p class="q-text">When does it open?? My whole family is asking.</p>
-        <p class="q-attr">— everyone, simultaneously</p>
+        <p class="q-attr">— everyone, simultaneously · GCC</p>
       </div>
     </div>
   </div>
@@ -760,48 +781,53 @@ footer{
 <!-- TIERS -->
 <section id="tiers">
   <div class="tiers-body" id="tiers-body">
-    <p class="tiers-eyebrow">Choose how you arrive</p>
-    <h2 class="tiers-hl">Three ways to be on the list.</h2>
-    <p class="tiers-sub">Your place at the wedding depends on how you arrive.</p>
+    <p class="tiers-eyebrow">Dubai · October 2026 · First 500</p>
+    <h2 class="tiers-hl">Choose how you arrive.</h2>
+    <p class="tiers-sub">Only 500 founding spots exist. Once they're gone, the price goes up.</p>
     <div class="tiers-grid">
 
-      <div class="tier-card" data-tier="Guest">
+      <div class="tier-card" data-tier="Guest List">
         <div class="tier-num">Tier 01</div>
-        <div class="tier-name">Guest</div>
-        <p class="tier-tagline">You've been invited. Welcome to the shaadi.</p>
+        <div class="tier-name">Guest List</div>
+        <p class="tier-tagline">You've been invited. Hold your place — free, for now.</p>
         <ul class="tier-perks">
-          <li>Early access notification</li>
+          <li>First to know when we launch</li>
+          <li>Early access invitation</li>
           <li>First look at the experience</li>
-          <li>Founding guest price</li>
         </ul>
-        <button class="tier-btn" type="button">Choose Guest →</button>
+        <button class="tier-btn" type="button">Join the list →</button>
       </div>
 
-      <div class="tier-card vip" data-tier="VIP">
-        <div class="tier-badge">most chosen</div>
-        <div class="tier-num">Tier 02</div>
-        <div class="tier-name">VIP</div>
-        <p class="tier-tagline">Front-row seat. The wedding wouldn't be the same without you.</p>
+      <div class="tier-card vip" data-tier="Founder Circle">
+        <div class="tier-badge">only 500 spots</div>
+        <div class="tier-num">Tier 02 · Founding Price</div>
+        <div class="tier-name">Founder Circle</div>
+        <div class="tier-price">
+          <span class="tier-price-currency">AED</span>
+          <span class="tier-price-amount">899</span>
+        </div>
+        <p class="tier-avail">47 spots remaining</p>
         <ul class="tier-perks">
-          <li>Priority access — first to receive</li>
-          <li>Exclusive behind-the-scenes content</li>
-          <li>Founding VIP price locked in</li>
+          <li>Price locked — launches higher</li>
+          <li>Priority delivery, Dubai October 2026</li>
+          <li>Exclusive founder content &amp; updates</li>
           <li>Name on the founding guest wall</li>
+          <li>Pre-order secured, pay at launch</li>
         </ul>
-        <button class="tier-btn" type="button">Choose VIP →</button>
+        <button class="tier-btn" type="button">Lock my founding price →</button>
       </div>
 
-      <div class="tier-card" data-tier="Family">
+      <div class="tier-card" data-tier="Wedding Planner">
         <div class="tier-num">Tier 03</div>
-        <div class="tier-name">Family</div>
-        <p class="tier-tagline">Bring your party. Unlock when you invite three guests.</p>
+        <div class="tier-name">Wedding Planner</div>
+        <p class="tier-tagline">For teams, families, and those who throw great parties.</p>
         <ul class="tier-perks">
-          <li>Everything in VIP</li>
-          <li>Invite your party (up to 8)</li>
-          <li>Exclusive Family edition content</li>
-          <li>The wedding cannot begin without you</li>
+          <li>Everything in Founder Circle</li>
+          <li>Multiple sets — gifting &amp; events</li>
+          <li>Dedicated concierge</li>
+          <li>Corporate &amp; bulk pricing available</li>
         </ul>
-        <button class="tier-btn" type="button">Choose Family →</button>
+        <button class="tier-btn" type="button">Enquire →</button>
       </div>
 
     </div>
@@ -817,11 +843,11 @@ footer{
       <div class="place-inner">
         <p class="rsvp-eyebrow">cordially invited</p>
         <h2 class="rsvp-hl">Take your place<br>on the guest list.</h2>
-        <p class="rsvp-sub">Your seat is waiting. The shaadi is almost here.</p>
+        <p class="rsvp-sub">Your seat is waiting. Dubai launch, October 2026.</p>
 
         <div class="rsvp-tier-row">
           Arriving as:
-          <button class="rsvp-tier-chip" id="rsvp-tier-chip" type="button">Guest</button>
+          <button class="rsvp-tier-chip" id="rsvp-tier-chip" type="button">Guest List</button>
         </div>
 
         <form class="rsvp-fields" id="rsvp-form" novalidate>
@@ -839,7 +865,7 @@ footer{
           </button>
         </form>
 
-        <p class="rsvp-note">No spam. Just your invitation, when the time comes.</p>
+        <p class="rsvp-note">No spam. Just your invitation when we launch in Dubai.</p>
       </div>
     </div>
   </div>
@@ -851,7 +877,7 @@ footer{
   <div class="fw" id="fw"></div>
   <div class="success-body">
     <p class="s-eyebrow">You're on the list</p>
-    <h2 class="s-hl">The shaadi<br>has begun.</h2>
+    <h2 class="s-hl">You're in.<br>Welcome.</h2>
     <p class="s-sub" id="s-sub">Your seat is held, <span id="s-name">Guest</span>.</p>
     <div class="seat-chip" id="seat-chip">★ <span id="s-seat">GUEST · No. 0428</span></div>
 
@@ -871,19 +897,19 @@ footer{
       <button class="s-btn" type="button" onclick="copyInvite()">Copy invite link</button>
       <button class="s-btn gold" type="button" onclick="shareCard()">Invite your party →</button>
     </div>
-    <p class="s-refer-note">Refer 3 guests to unlock Family tier.</p>
+    <p class="s-refer-note">Refer 3 friends to move up the list.</p>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="ft-brand">TGIW</div>
-  <div class="ft-note">© 2026 The Great Indian Wedding · All rights reserved</div>
+  <div class="ft-brand">TGIW · Jugaadors</div>
+  <div class="ft-note">© 2026 Jugaadors · The Great Indian Wedding · Dubai 2026</div>
 </footer>
 
 <script>
 /* ===== STATE ===== */
-let selectedTier = 'Guest';
+let selectedTier = 'Guest List';
 
 /* ===== NAV DARK ON SCROLL ===== */
 const nav = document.getElementById('nav');
@@ -1002,13 +1028,27 @@ document.getElementById('rsvp-form').addEventListener('submit', (e) => {
   if (!email || !email.includes('@')) { emailInput.focus(); return; }
 
   const seatNum = String(Math.floor(1000 + Math.random() * 7999)).padStart(4, '0');
-  const tierLabel = selectedTier.toUpperCase();
+  const isFounder = selectedTier === 'Founder Circle';
+  const isPlanner = selectedTier === 'Wedding Planner';
 
   // Populate success state
   document.getElementById('s-name').textContent = name;
-  document.getElementById('s-seat').textContent = `${tierLabel} · No. ${seatNum}`;
+  const tierShort = isFounder ? 'FOUNDER' : isPlanner ? 'PLANNER' : 'GUEST';
+  document.getElementById('s-seat').textContent = `${tierShort} · No. ${seatNum}`;
   document.getElementById('invite-name').textContent = name;
   document.getElementById('invite-seat').textContent = `Seat No. ${seatNum}`;
+
+  // Personalise sub-copy for Founder Circle
+  if (isFounder) {
+    document.getElementById('s-sub').innerHTML =
+      `Your founding price is locked, <span id="s-name">${name}</span>. AED 899 — won't stay here.`;
+  } else if (isPlanner) {
+    document.getElementById('s-sub').innerHTML =
+      `Your enquiry is noted, <span id="s-name">${name}</span>. Our team will reach out shortly.`;
+  } else {
+    document.getElementById('s-sub').innerHTML =
+      `Your seat is held, <span id="s-name">${name}</span>. Dubai, October 2026.`;
+  }
 
   // Show success, hide rsvp
   document.getElementById('rsvp').style.display = 'none';
