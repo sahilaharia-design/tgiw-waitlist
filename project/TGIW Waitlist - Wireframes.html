@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TGIW · Waitlist Experience — Wireframe Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ecde;
+    --paper2:#efe7d6;
+    --ink:#23201c;
+    --ink-soft:#5a544a;
+    --line:#c9bfa9;
+    --hatch:rgba(35,32,28,.07);
+    --red:#bc2b25;      /* TGIW red  — used for CONVERSION notes + brand zones */
+    --gold:#dd9a1f;     /* marigold  — VIP / highlight */
+    --teal:#1f7a78;     /* peacock   — used for MOTION notes */
+    --green:#1a7a44;    /* emerald   — brand band */
+    --charcoal:#28241f; /* "black hold" cinematic plates */
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:radial-gradient(var(--line) .8px, transparent .8px);
+    background-size:22px 22px;
+    color:var(--ink);
+    font-family:'Space Mono',ui-monospace,monospace;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hand{font-family:'Caveat',cursive;}
+
+  /* ---------- top bar ---------- */
+  header{
+    position:sticky;top:0;z-index:40;
+    background:linear-gradient(var(--paper),var(--paper) 78%,rgba(243,236,222,0));
+    padding:14px clamp(14px,4vw,40px) 6px;
+    border-bottom:2px solid var(--ink);
+  }
+  .brandrow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .lockup{
+    font-family:'Caveat',cursive;font-weight:700;font-size:34px;line-height:.9;
+    letter-spacing:.5px;color:var(--red);padding-right:10px;
+  }
+  .lockup b{color:var(--green);}
+  .kicker{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-soft);}
+  .sub{font-size:12px;color:var(--ink-soft);margin-left:auto;}
+
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;}
+  .tab{
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;
+    background:var(--paper2);color:var(--ink);
+    border:2px solid var(--ink);
+    border-radius:140px 10px 130px 12px/12px 130px 10px 140px;
+    padding:8px 14px;cursor:pointer;position:relative;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .tab:hover{transform:translate(-1px,-1px);}
+  .tab .t-id{color:var(--red);font-weight:700;}
+  .tab[aria-selected="true"]{background:var(--ink);color:var(--paper);box-shadow:3px 3px 0 var(--gold);}
+  .tab[aria-selected="true"] .t-id{color:var(--gold);}
+
+  .spacer{flex:1 1 40px;}
+  .toggle{
+    display:inline-flex;border:2px solid var(--ink);border-radius:120px 8px 110px 9px/9px 110px 8px 120px;overflow:hidden;
+  }
+  .toggle button{
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--paper2);color:var(--ink-soft);border:0;padding:7px 12px;cursor:pointer;
+  }
+  .toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .toggle + .toggle{margin-left:4px;}
+  .ctl-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-right:2px;}
+
+  /* ---------- direction intro ---------- */
+  main{padding:clamp(18px,4vw,40px) clamp(14px,4vw,48px) 120px;max-width:1280px;margin:0 auto;}
+  .intro{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;margin-bottom:30px;}
+  .intro .big{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(38px,6vw,64px);line-height:.92;flex:1 1 320px;}
+  .intro .big .ix{color:var(--red);}
+  .premise{flex:1 1 320px;font-size:14px;line-height:1.7;color:var(--ink-soft);}
+  .premise .hand{font-size:22px;color:var(--ink);display:block;margin-bottom:8px;line-height:1.25;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .chip{
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    border:1.5px solid var(--ink);padding:4px 9px;
+    border-radius:90px 8px 80px 9px/9px 80px 8px 90px;color:var(--ink-soft);
+  }
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:flex;gap:18px;flex-wrap:wrap;align-items:center;
+    border:2px dashed var(--line);border-radius:18px;padding:10px 16px;margin-bottom:34px;
+    font-size:11px;color:var(--ink-soft);
+  }
+  .legend b{font-family:'Caveat';font-size:16px;font-weight:700;}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+
+  /* ---------- storyboard ---------- */
+  .board{display:flex;flex-direction:column;gap:0;}
+  .board.horiz{
+    flex-direction:row;align-items:stretch;gap:0;
+    overflow-x:auto;overflow-y:hidden;padding-bottom:18px;
+    border:2px solid var(--ink);border-radius:18px;background:var(--paper2);
+    scroll-snap-type:x proximity;
+  }
+  .board.horiz::-webkit-scrollbar{height:12px;}
+  .board.horiz::-webkit-scrollbar-thumb{background:var(--ink);border-radius:8px;}
+  .horiz-hint{display:none;}
+  .board.horiz .horiz-hint{}
+
+  .beat{display:grid;grid-template-columns:48px minmax(0,1fr) 240px;gap:18px;align-items:start;padding:10px 0;}
+  .board.horiz .beat{
+    display:flex;flex-direction:column;width:340px;min-width:340px;flex:0 0 auto;
+    padding:18px;border-right:2px dashed var(--line);scroll-snap-align:start;
+  }
+  .board.horiz .beat:last-child{border-right:0;}
+
+  /* spine (vertical only) */
+  .spine{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:6px;}
+  .board.horiz .spine{flex-direction:row;width:auto;padding:0 0 10px;}
+  .num{
+    font-family:'Caveat';font-weight:700;font-size:24px;color:var(--paper);
+    background:var(--ink);width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;box-shadow:2px 2px 0 var(--gold);
+  }
+  .beat-tag{
+    font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);
+    writing-mode:vertical-rl;transform:rotate(180deg);margin-top:4px;
+  }
+  .board.horiz .beat-tag{writing-mode:horizontal-tb;transform:none;margin:0 0 0 8px;}
+
+  /* the frame = a viewport mock */
+  .frame{
+    background:var(--paper2);
+    border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    border-radius:8px;overflow:hidden;position:relative;
+    aspect-ratio:16/9;width:100%;max-width:760px;
+  }
+  .frame.tall{aspect-ratio:16/9;}
+  body.mobile .frame{aspect-ratio:9/19;max-width:280px;margin:0 auto;}
+  .board.horiz .frame{max-width:none;}
+  body.mobile .board.horiz .frame{max-width:240px;}
+
+  .chrome{
+    height:18px;background:var(--paper);border-bottom:1.5px solid var(--line);
+    display:flex;align-items:center;gap:5px;padding:0 8px;
+  }
+  .chrome i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block;}
+  .chrome span{font-size:8.5px;color:var(--line);margin-left:6px;letter-spacing:.1em;}
+
+  .canvas{position:absolute;inset:18px 0 0 0;display:flex;flex-direction:column;}
+  body.mobile .canvas{inset:18px 0 0 0;}
+
+  /* plates (image placeholders) */
+  .plate{
+    position:relative;flex:1;
+    background-image:repeating-linear-gradient(45deg,transparent 0 9px,var(--hatch) 9px 10px);
+    background-color:#e7dfcd;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+  }
+  .plate.dark{background-color:var(--charcoal);background-image:repeating-linear-gradient(45deg,transparent 0 9px,rgba(255,255,255,.05) 9px 10px);}
+  .plate-cap{
+    font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+    background:rgba(243,236,222,.82);padding:3px 8px;border-radius:4px;border:1px solid var(--line);
+    max-width:80%;
+  }
+  .plate.dark .plate-cap{color:#d8cdb4;background:rgba(0,0,0,.35);border-color:rgba(255,255,255,.15);}
+
+  /* overlay content blocks inside a frame */
+  .ov{position:absolute;inset:18px 0 0 0;display:flex;flex-direction:column;padding:6% 7%;pointer-events:none;}
+  .ov.center{align-items:center;justify-content:center;text-align:center;}
+  .ov.end{justify-content:flex-end;gap:3px;padding-bottom:8%;}
+  .ov.dark-text *{color:#f3ecde;}
+  .eyebrow{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .ov.dark-text .eyebrow{color:var(--gold);}
+  .hl{font-family:'Caveat';font-weight:700;line-height:1.04;font-size:clamp(20px,3.2vw,36px);max-width:15ch;}
+  body.mobile .hl{font-size:23px;}
+  .hl.sm{font-size:clamp(16px,2.4vw,26px);}
+  .hl2{font-family:'Caveat';font-weight:500;font-size:clamp(14px,1.7vw,20px);line-height:1.1;color:var(--ink-soft);margin-top:14px;max-width:22ch;}
+  .ov.dark-text .hl2{color:#cabfa6;}
+
+  /* fake body bars */
+  .bars{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+  .bar{height:5px;background:var(--line);border-radius:3px;}
+
+  /* ghost nav / cta */
+  .ghostnav{position:absolute;top:22px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 7%;}
+  .ghostnav .gl{font-family:'Caveat';font-weight:700;font-size:15px;color:var(--red);}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono';font-size:9px;letter-spacing:.06em;
+    border:2px solid var(--ink);background:var(--paper);color:var(--ink);
+    padding:5px 11px;border-radius:90px 7px 80px 8px/8px 80px 7px 90px;
+  }
+  .pill.solid{background:var(--red);color:var(--paper);border-color:var(--red);}
+  .pill.gold{background:var(--gold);border-color:var(--gold);color:var(--ink);}
+  .ov.dark-text .pill{background:transparent;color:#f3ecde;border-color:#f3ecde;}
+
+  /* mini five-days strip */
+  .days{display:flex;gap:6px;width:100%;margin-top:auto;}
+  .day{flex:1;border:1.5px solid currentColor;border-radius:4px;padding:6px 4px;text-align:center;opacity:.9;}
+  .day .dn{font-size:7.5px;letter-spacing:.1em;opacity:.6;}
+  .day .dt{font-family:'Caveat';font-weight:700;font-size:12px;line-height:1;}
+
+  /* tier doors */
+  .doors{display:flex;gap:8px;width:100%;height:100%;align-items:stretch;}
+  .door{flex:1;border:2px solid var(--ink);border-radius:6px;background:var(--paper);display:flex;flex-direction:column;padding:8px;gap:5px;position:relative;}
+  .door.vip{border-color:var(--gold);box-shadow:3px 3px 0 var(--gold);}
+  .door .dl{font-family:'Caveat';font-weight:700;font-size:16px;}
+  .door .dlab{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .door .badge{position:absolute;top:-9px;right:6px;font-size:7px;background:var(--gold);color:var(--ink);padding:2px 6px;border-radius:6px;letter-spacing:.1em;}
+
+  /* quotes */
+  .quotes{display:flex;gap:8px;width:100%;height:100%;align-items:center;justify-content:center;}
+  .qcard{flex:1;max-width:30%;background:var(--paper);border:1.5px solid var(--ink);border-radius:6px;padding:8px;transform:rotate(-1.4deg);}
+  .qcard:nth-child(2){transform:rotate(1.6deg);}
+  .qcard .qm{font-family:'Caveat';font-weight:700;font-size:13px;line-height:1.05;}
+  .qcard .qa{font-size:7.5px;color:var(--ink-soft);margin-top:6px;letter-spacing:.06em;}
+
+  /* rsvp form */
+  .form{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:340px;}
+  .field{width:100%;border:2px solid var(--ink);background:var(--paper);border-radius:80px 8px 70px 9px/9px 70px 8px 80px;padding:9px 12px;font-size:9px;color:var(--ink-soft);letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center;}
+  .field .cursor{width:1px;height:12px;background:var(--ink);}
+
+  /* invitation share card */
+  .invite{
+    width:62%;max-width:300px;background:var(--paper);border:2px solid var(--ink);
+    border-radius:8px;box-shadow:5px 5px 0 var(--gold);padding:12px;transform:rotate(-2deg);
+    display:flex;flex-direction:column;gap:6px;text-align:center;
+  }
+  .invite .iborder{border:1.5px dashed var(--line);border-radius:6px;padding:10px 8px;display:flex;flex-direction:column;gap:6px;}
+  .invite .ie{font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);}
+  .invite .inm{font-family:'Caveat';font-weight:700;font-size:22px;line-height:.9;}
+  .invite .iqr{width:42px;height:42px;margin:0 auto;background:
+    repeating-linear-gradient(0deg,var(--ink) 0 3px,transparent 3px 6px),
+    repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 6px);
+    background-color:var(--paper);border:1.5px solid var(--ink);opacity:.7;}
+  .seatchip{display:inline-flex;gap:6px;align-items:center;font-size:9px;border:2px solid var(--gold);background:rgba(221,154,31,.14);padding:5px 10px;border-radius:80px 7px 70px 8px/8px 70px 7px 80px;letter-spacing:.08em;}
+
+  .firework{position:absolute;width:46px;height:46px;opacity:.5;background:
+    radial-gradient(circle, var(--gold) 1.5px, transparent 2px) 0 0/9px 9px;
+    -webkit-mask:radial-gradient(circle,#000 60%,transparent 62%);mask:radial-gradient(circle,#000 60%,transparent 62%);}
+
+  /* margin notes */
+  .notes{display:flex;flex-direction:column;gap:12px;padding-top:6px;}
+  body.notes-off .notes{display:none;}
+  body.notes-off .beat{grid-template-columns:48px minmax(0,1fr);}
+  body.notes-off .board.horiz .beat{width:300px;min-width:300px;}
+  .note{position:relative;padding-left:14px;font-size:11.5px;line-height:1.5;}
+  .note::before{content:"";position:absolute;left:0;top:4px;width:5px;height:5px;border-radius:50%;}
+  .note .nl{font-family:'Caveat';font-weight:700;font-size:13px;letter-spacing:.02em;display:block;text-transform:uppercase;}
+  .note.purpose::before{background:var(--ink);}
+  .note.purpose .nl{color:var(--ink);}
+  .note.motion{color:var(--teal);}
+  .note.motion::before{background:var(--teal);}
+  .note.motion .nl{color:var(--teal);}
+  .note.conv{color:var(--red);}
+  .note.conv::before{background:var(--red);}
+  .note.conv .nl{color:var(--red);}
+
+  /* connectors between beats (vertical) */
+  .connector{display:flex;align-items:center;gap:10px;padding:2px 0 2px 14px;color:var(--ink-soft);}
+  body.notes-off .connector{}
+  .board.horiz .connector{display:none;}
+  .connector .arr{font-size:18px;color:var(--teal);}
+  .connector .clab{font-family:'Caveat';font-size:16px;color:var(--teal);}
+  .connector .cline{flex:1;border-top:2px dotted var(--line);}
+
+  .endcap{margin-top:20px;font-family:'Caveat';font-size:20px;color:var(--ink-soft);text-align:center;}
+  .endcap b{color:var(--red);}
+
+  @media(max-width:780px){
+    .beat{grid-template-columns:34px minmax(0,1fr);}
+    .notes{grid-column:2;}
+    .spine{padding-top:2px;}
+    .sub{display:none;}
+  }
+</style>
+</head>
+<body class="desktop">
+<header>
+  <div class="brandrow">
+    <span class="lockup">TG<b>I</b>W</span>
+    <span class="kicker">The Great Indian Wedding — Waitlist Experience</span>
+    <span class="sub">Wireframe exploration · v1 · 4 directions · rough &amp; low-fi</span>
+  </div>
+  <div class="controls">
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <span class="spacer"></span>
+    <span class="ctl-label">Device</span>
+    <div class="toggle" id="deviceToggle">
+      <button data-dev="desktop" aria-pressed="true">Desktop</button>
+      <button data-dev="mobile" aria-pressed="false">Mobile</button>
+    </div>
+    <span class="ctl-label">Notes</span>
+    <div class="toggle" id="notesToggle">
+      <button data-notes="on" aria-pressed="true">On</button>
+      <button data-notes="off" aria-pressed="false">Off</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="intro" id="intro"></section>
+  <div class="legend">
+    <b>Reading the margins:</b>
+    <span><span class="dot" style="background:var(--ink)"></span>Purpose / IA</span>
+    <span><span class="dot" style="background:var(--teal)"></span>Motion (intended)</span>
+    <span><span class="dot" style="background:var(--red)"></span>Conversion role</span>
+    <span style="margin-left:auto">▦ hatched = image / illustration plate &nbsp;·&nbsp; ▭ bars = body copy &nbsp;·&nbsp; handwriting = real headline copy</span>
+  </div>
+  <div id="board" class="board"></div>
+  <div class="endcap" id="endcap"></div>
+</main>
+
+<script>
+/* ============================ CONTENT ============================ */
+const DIRECTIONS = [
+  {
+    id:"A", name:"The Procession", orient:"v",
+    premise:"One unbroken descent into the night. You don't read the page — you arrive at the wedding. Scroll is time: each push pulls you deeper into the celebration until you're standing at the mandap.",
+    best:["Most cinematic","Strong on mobile","Highest emotional build"],
+    scrollNoun:"scroll",
+    beats:[
+      {tag:"Arrival", kind:"hero", head:"Some weddings you attend.", sub:"This one, you enter.",
+        purpose:"Full-bleed gates of a lit palace at night. No nav clutter — just a doorway and a feeling.",
+        motion:"Camera pushes through the gates; lanterns ignite in sequence; title settles, then a soft scroll cue pulses.",
+        conv:"Ghost ‘RSVP’ top-right — present but not shouting. The whole hero is the door."},
+      {tag:"Manifesto", kind:"manifesto", head:"It was never about the wedding.", sub:"It was about everyone who showed up.",
+        purpose:"A held black beat. Type only. The ‘what is this feeling’ moment that defines the brand.",
+        motion:"World fades to near-black; line types in, holds, breathes. Reduced-motion = static.",
+        conv:"None. Pure emotional deposit — earns the ask later."},
+      {tag:"The Five Days", kind:"days", head:"Five days. One unforgettable chaos.",
+        purpose:"The journey teaser — Welcome Dinner → Mehndi → Sangeet → Haldi → Wedding. Tease the world, never the rules.",
+        motion:"Each day swaps in full-bleed as you scroll; color temperature shifts day to day (dusk→gold→neon→sun→fire).",
+        conv:"Curiosity engine. ‘Day 5 is invite-only’ planted as a hook."},
+      {tag:"Social proof", kind:"social", head:"What the guests are saying",
+        purpose:"Pull-quotes float over a dimmed world. Belonging + FOMO without a testimonial wall.",
+        motion:"Quotes drift in on parallax at different depths; world stays dim behind.",
+        conv:"Trust + ‘people like me are already inside.’"},
+      {tag:"Invite tiers", kind:"tiers", head:"Choose how you arrive.",
+        purpose:"Three doors — Guest, VIP, Family — echoing the game's character cards. Role-play, not a pricing table.",
+        motion:"Doors lean toward the cursor; VIP glows; pick one and it swings open into the RSVP.",
+        conv:"Self-selection raises intent before the form. Family = referral tier."},
+      {tag:"RSVP", kind:"rsvp", head:"Take your place on the guest list.",
+        purpose:"The conversion. Email + name styled as a wedding place-card, not a form.",
+        motion:"Field settles like a card placed on a table; button shimmers gold once.",
+        conv:"THE moment. Single field, one button: ‘RSVP · Reserve your seat’."},
+      {tag:"You're in", kind:"success", head:"You're in. The shaadi has begun.",
+        purpose:"Post-signup celebration. Confirms seat + sets anticipation clock.",
+        motion:"Fireworks burst once (tasteful), seat number stamps in like a wax seal.",
+        conv:"Seat ‘GUEST · No. 0428’. Buttons: add to calendar, invite your party."},
+      {tag:"Shareable card", kind:"card", head:"Bring your party.",
+        purpose:"A personalised invitation card with the guest's name — the shareable artifact + referral engine.",
+        motion:"Card flips to reveal name; ‘Bring 3 → become Family’ counter ticks.",
+        conv:"Growth loop. Share unlocks tier upgrade (Guest→VIP→Family)."}
+    ]
+  },
+  {
+    id:"B", name:"The Panorama", orient:"h",
+    premise:"A single horizontal tracking shot across the entire wedding world — built directly on your wide hero panorama. You pan left-to-right through the celebration; the RSVP lives in the bright negative-space heart at the center of the illustration.",
+    best:["Showcases the panorama art","Novel / talkable","Desktop-led, swipe on mobile"],
+    scrollNoun:"pan",
+    beats:[
+      {tag:"Enter left", kind:"hero", head:"Step into the world.", sub:"Swipe to walk through it →",
+        purpose:"Far-left edge of the panorama — the gates. Establishes the pan gesture immediately.",
+        motion:"Horizontal parallax: foreground florals move faster than the palace skyline behind.",
+        conv:"Persistent ‘RSVP’ dot lower-right; a thin progress rail shows how far across the world you are."},
+      {tag:"Manifesto", kind:"manifesto", head:"Everyone you love, in one frame.",
+        purpose:"As you pan, the crowd thins to a quiet plate carrying the manifesto line.",
+        motion:"Crowd parts; type holds in a calm pocket of the panorama, then the pan resumes.",
+        conv:"Emotional pause mid-journey."},
+      {tag:"The Five Days", kind:"days", head:"Walk past all five days.",
+        purpose:"Each region of the panorama IS a day — you literally travel Welcome Dinner → Wedding by panning.",
+        motion:"Day labels rise as their zone enters frame; ambient sound/color shifts per zone.",
+        conv:"The world doubles as the IA — exploration = education."},
+      {tag:"The center", kind:"rsvp", head:"Take your place at the center.",
+        purpose:"The bright negative-space heart of the panorama — the natural focal point — holds the RSVP.",
+        motion:"Pan eases to a stop and centers; everything else softly blurs to depth-of-field.",
+        conv:"THE moment, at the visual climax of the artwork. Place-card field + ‘Reserve your seat’."},
+      {tag:"Social + tiers", kind:"tiers", head:"Choose your seat in the crowd.",
+        purpose:"Past center, the right half shows guests + the three tiers as zones of the party to join.",
+        motion:"Guest quotes hover over their part of the scene; tier doors stand in the crowd.",
+        conv:"Tier self-select woven into the world rather than a separate section."},
+      {tag:"You're in", kind:"success", head:"You're in. The shaadi has begun.",
+        purpose:"Far-right edge: the celebration crescendo. Confirmation + share card.",
+        motion:"Fireworks across the right sky; seat seal stamps; the rail fills to 100%.",
+        conv:"Seat number + shareable invitation + ‘invite your party’."}
+    ]
+  },
+  {
+    id:"C", name:"The Spotlight", orient:"v",
+    premise:"The world never moves — the light does. A pinned, living backdrop with A24-style title cards rising through the dark. You glimpse the celebration through gaps in the type. Quiet, controlled, theatrical.",
+    best:["Most ‘premium / A24’","Type-led restraint","Great for slow reveal"],
+    scrollNoun:"scroll",
+    beats:[
+      {tag:"Lights up", kind:"hero", head:"The Great Indian Wedding", sub:"You're cordially invited.",
+        purpose:"Pinned world plate, dimmed. A single spotlight finds the title. The stage is set.",
+        motion:"Backdrop is PINNED; a spotlight gradient travels across the dark and lands on the wordmark.",
+        conv:"Minimal. A single glowing ‘RSVP’ waits in the dark."},
+      {tag:"Manifesto", kind:"manifesto", head:"It was never about the wedding.",
+        purpose:"World holds behind; title cards rise and fall in the dark like a film's cold open.",
+        motion:"PINNED backdrop; cards cross-fade through black; spotlight shifts focus point each card.",
+        conv:"None — building reverence."},
+      {tag:"The Five Days", kind:"days", head:"Five nights. Step through each.",
+        purpose:"Five ‘doors’ of light open one at a time over the same pinned world, each a day.",
+        motion:"Spotlight opens a doorway of color into the dark per day; the rest stays shadowed.",
+        conv:"Restrained reveal — show one day at a time, never the full picture."},
+      {tag:"Social proof", kind:"social", head:"Overheard at the wedding",
+        purpose:"Quotes appear as caption cards in the lower third, cinema-subtitle style.",
+        motion:"Subtitle cards fade in over the held backdrop; world stays pinned.",
+        conv:"Quiet credibility."},
+      {tag:"Invite tiers", kind:"tiers", head:"Take the stage as…",
+        purpose:"Three spotlit roles — Guest, VIP, Family. Choosing turns up the lights on that path.",
+        motion:"Hovering a tier brightens its spotlight and dims the others.",
+        conv:"Role selection feels like stepping into the light."},
+      {tag:"RSVP", kind:"rsvp", head:"Step into the light.",
+        purpose:"The pin releases; the full world finally blooms behind the RSVP card.",
+        motion:"Spotlight widens to full color; backdrop ‘un-pins’ and the world comes alive — the payoff.",
+        conv:"THE moment, rewarded with the full reveal. Place-card field + ‘Reserve your seat’."},
+      {tag:"You're in", kind:"success", head:"The lights are yours now.",
+        purpose:"Confirmation under full stage lights; seat seal + shareable card.",
+        motion:"House lights up; fireworks once; seat stamps.",
+        conv:"Seat number + share-to-upgrade tier loop."}
+    ]
+  },
+  {
+    id:"D", name:"The Guest List", orient:"v",
+    premise:"The restrained, Hermès-quiet contrarian cut. The wedding world is framed like artwork in a gallery; crisp editorial type does the cinema. Numbered guest-list motif, generous negative space, monospace counters. Confident, not loud.",
+    best:["Most ‘luxury / editorial’","Calmest, most legible","A deliberate counterpoint"],
+    scrollNoun:"scroll",
+    beats:[
+      {tag:"Cover", kind:"hero", head:"The Guest List", sub:"By invitation. Opening soon.",
+        purpose:"Split canvas: a single framed plate of the world on one side, quiet type on the other.",
+        motion:"Almost still. The framed plate breathes (slow ken-burns); type sets with precision.",
+        conv:"A discreet numbered ‘No. ___ ’ line hints the seat you'll claim."},
+      {tag:"Manifesto", kind:"manifesto", head:"A wedding is just a guest list with feelings.",
+        purpose:"Editorial statement spread. One framed detail crop + a confident line.",
+        motion:"Type reveals line-by-line on scroll; image crop shifts subtly. Restraint is the point.",
+        conv:"Tone-setting; positions exclusivity as taste, not hype."},
+      {tag:"The Five Days", kind:"days", head:"The itinerary",
+        purpose:"Five days as a clean numbered itinerary list beside small framed crops — like a printed programme.",
+        motion:"Rows reveal in sequence; the paired crop fades per row.",
+        conv:"Reads as a curated programme; intrigue through elegance, not chaos."},
+      {tag:"Social proof", kind:"social", head:"From the guest book",
+        purpose:"Two or three set quotes in editorial pull-quote style, generous margins.",
+        motion:"Minimal — a gentle fade. Nothing competes with the words.",
+        conv:"Understated social proof; ‘the right people are already on the list.’"},
+      {tag:"Invite tiers", kind:"tiers", head:"Three ways to be on the list.",
+        purpose:"Guest / VIP / Family as a clean comparison, monospace labels, hairline rules.",
+        motion:"Subtle row highlight on hover; VIP marked with a single gold rule.",
+        conv:"Clarity sells the upgrade; Family = referral, stated plainly."},
+      {tag:"RSVP", kind:"rsvp", head:"Add your name to the list.",
+        purpose:"A single framed card: name + email on hairline-ruled fields. Quiet confidence.",
+        motion:"Field underlines draw in; button is a simple ruled rectangle that fills on hover.",
+        conv:"THE moment. ‘Reserve your seat — No. ____’ assigns a number live."},
+      {tag:"You're in", kind:"success", head:"You're on the list.",
+        purpose:"Restrained confirmation: a printed-card seat number + a tasteful share card.",
+        motion:"A single gold rule draws under the seat number. No fireworks — a wax seal instead.",
+        conv:"Seat number + shareable invitation; ‘refer to move up the list’."}
+    ]
+  }
+];
+
+/* ============================ STATE ============================ */
+const state = {
+  dir: localStorage.getItem('tgiw_dir') || 'A',
+  device: localStorage.getItem('tgiw_device') || 'desktop',
+  notes: localStorage.getItem('tgiw_notes') || 'on'
+};
+
+/* ============================ RENDER: FRAME INNARDS ============================ */
+function bars(n, widths){
+  widths = widths || [];
+  let h='<div class="bars">';
+  for(let i=0;i<n;i++){ h+=`<div class="bar" style="width:${widths[i]||(60+Math.random()*35)}%"></div>`; }
+  return h+'</div>';
+}
+
+function frameInner(b, dir){
+  const dark = (b.kind==='manifesto') || (b.kind==='success' && dir.id!=='D') ||
+               (dir.id==='C' && (b.kind==='hero'||b.kind==='days'||b.kind==='social'||b.kind==='tiers'));
+  const plateCap = {
+    hero:"FULL-BLEED · wedding world panorama",
+    manifesto:"BLACK HOLD · world dimmed to near-black",
+    days:"FULL-BLEED · the five day-boards",
+    social:"DIMMED · world behind quotes",
+    tiers:"BACKDROP · party in soft focus",
+    rsvp:"HERO PLATE · the mandap / center",
+    success:"FIREWORKS · celebration crescendo",
+    card:"WARM · close on the invitation"
+  }[b.kind] || "ILLUSTRATION PLATE";
+
+  let plate = `<div class="plate ${dark?'dark':''}"><span class="plate-cap">▦ ${plateCap}</span></div>`;
+
+  // build overlay
+  let ovClass = "ov";
+  let inner = "";
+  const dtxt = dark ? " dark-text" : "";
+
+  if(b.kind==='hero'){
+    ovClass="ov end"+dtxt;
+    inner = `<div class="ghostnav"><span class="gl">TGIW</span><span class="pill">RSVP</span></div>
+      <div class="eyebrow">${dir.id==='B'?'01 · enter left':'enter the world'}</div>
+      <div class="hl">${b.head}</div>${b.sub?`<div class="hl2">${b.sub}</div>`:''}`;
+  } else if(b.kind==='manifesto'){
+    ovClass="ov center"+dtxt;
+    inner = `<div class="hl">${b.head}</div>${b.sub?`<div class="hl2">${b.sub}</div>`:''}`;
+  } else if(b.kind==='days'){
+    ovClass="ov end"+dtxt;
+    const days=[['DAY 1','Welcome'],['DAY 2','Mehndi'],['DAY 3','Sangeet'],['DAY 4','Haldi'],['DAY 5','Wedding']];
+    inner = `<div class="hl sm">${b.head}</div>
+      <div class="days">${days.map(d=>`<div class="day"><div class="dn">${d[0]}</div><div class="dt">${d[1]}</div></div>`).join('')}</div>`;
+  } else if(b.kind==='social'){
+    ovClass="ov center"+dtxt;
+    inner = `<div class="quotes">
+      <div class="qcard"><div class="qm">“I cried. At a&nbsp;waitlist.”</div><div class="qa">— first 500</div></div>
+      <div class="qcard"><div class="qm">“Sent it to my whole&nbsp;family group.”</div><div class="qa">— a future guest</div></div>
+      <div class="qcard"><div class="qm">“When does it&nbsp;open??”</div><div class="qa">— everyone</div></div>
+    </div>`;
+  } else if(b.kind==='tiers'){
+    ovClass="ov center"+dtxt;
+    inner = `<div class="hl sm" style="margin-bottom:18px">${b.head}</div>
+      <div class="doors">
+        <div class="door"><div class="dlab">Tier 01</div><div class="dl">Guest</div>${bars(2,[90,70])}</div>
+        <div class="door vip"><div class="badge">most chosen</div><div class="dlab">Tier 02</div><div class="dl">VIP</div>${bars(2,[90,70])}</div>
+        <div class="door"><div class="dlab">Tier 03</div><div class="dl">Family</div>${bars(2,[90,60])}</div>
+      </div>`;
+  } else if(b.kind==='rsvp'){
+    ovClass="ov center"+dtxt;
+    inner = `<div class="hl sm" style="margin-bottom:20px">${b.head}</div>
+      <div class="form">
+        <div class="field"><span>your name on the card…</span><span class="cursor"></span></div>
+        <div class="field"><span>email — where we send the invite</span></div>
+        <span class="pill solid">RSVP · Reserve your seat</span>
+      </div>`;
+  } else if(b.kind==='success'){
+    ovClass="ov center"+dtxt;
+    inner = `<div class="firework" style="top:12%;left:16%"></div><div class="firework" style="top:18%;right:14%"></div>
+      <div class="hl sm">${b.head}</div>
+      <div class="hl2">Your seat is held.</div>
+      <span class="seatchip" style="margin-top:10px">★ GUEST · No. 0428</span>
+      <div style="display:flex;gap:8px;margin-top:12px"><span class="pill">+ add to calendar</span><span class="pill gold">invite your party</span></div>`;
+  } else if(b.kind==='card'){
+    ovClass="ov center";
+    inner = `<div class="invite">
+      <div class="iborder">
+        <div class="ie">cordially invited</div>
+        <div class="inm">— your name —</div>
+        <div class="iqr"></div>
+        <div class="ie" style="color:var(--ink-soft)">scan · share · bring your party</div>
+      </div>
+      </div>`;
+  }
+
+  return `<div class="chrome"><i></i><i></i><i></i><span>${state.device==='mobile'?'tgiw.app':'thegreatindianwedding.com / waitlist'}</span></div>
+    ${plate}<div class="${ovClass}">${inner}</div>`;
+}
+
+/* ============================ RENDER: BOARD ============================ */
+function renderTabs(){
+  const t = document.getElementById('tabs');
+  t.innerHTML = DIRECTIONS.map(d=>`
+    <button class="tab" role="tab" data-dir="${d.id}" aria-selected="${d.id===state.dir}">
+      <span class="t-id">${d.id}</span> · ${d.name}
+    </button>`).join('');
+  t.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{ state.dir=btn.dataset.dir; localStorage.setItem('tgiw_dir',state.dir); render(); });
+  });
+}
+
+function render(){
+  const dir = DIRECTIONS.find(d=>d.id===state.dir);
+  document.body.className = state.device + (state.notes==='off'?' notes-off':'');
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected', b.dataset.dir===state.dir));
+
+  // intro
+  document.getElementById('intro').innerHTML = `
+    <div class="big"><span class="ix">${dir.id}.</span> ${dir.name}</div>
+    <div class="premise"><span class="hand">${dir.premise.split('.')[0]}.</span>${dir.premise.substring(dir.premise.indexOf('.')+1)}
+      <div class="chips">${dir.best.map(b=>`<span class="chip">${b}</span>`).join('')}</div>
+    </div>`;
+
+  // board
+  const board = document.getElementById('board');
+  board.className = 'board' + (dir.orient==='h'?' horiz':'');
+  let html='';
+  if(dir.orient==='h'){
+    html += `<div class="beat" style="width:200px;min-width:200px;justify-content:center;background:var(--paper);"><div class="hand" style="font-size:22px;line-height:1.05;color:var(--teal)">→ pan across<br>the world<br><span style="font-size:13px;color:var(--ink-soft)">drag / scroll sideways</span></div></div>`;
+  }
+  dir.beats.forEach((b,i)=>{
+    const noteBlock = `<div class="notes">
+        <div class="note purpose"><span class="nl">Purpose</span>${b.purpose}</div>
+        <div class="note motion"><span class="nl">↗ Motion</span>${b.motion}</div>
+        <div class="note conv"><span class="nl">● Conversion</span>${b.conv}</div>
+      </div>`;
+    html += `<div class="beat">
+        <div class="spine"><span class="num">${String(i+1).padStart(2,'0')}</span><span class="beat-tag">${b.tag}</span></div>
+        <div class="frame ${b.kind==='hero'?'tall':''}">${frameInner(b,dir)}</div>
+        ${noteBlock}
+      </div>`;
+    if(dir.orient==='v' && i<dir.beats.length-1){
+      html += `<div class="connector"><span class="arr">↓</span><span class="clab">${dir.scrollNoun}</span><span class="cline"></span></div>`;
+    }
+  });
+  board.innerHTML = html;
+
+  document.getElementById('endcap').innerHTML = dir.orient==='h'
+    ? `End of the pan. <b>You're in.</b> — Direction ${dir.id}: ${dir.name}`
+    : `Bottom of the descent. <b>You're in.</b> — Direction ${dir.id}: ${dir.name}`;
+}
+
+/* ============================ TOGGLES ============================ */
+document.getElementById('deviceToggle').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  state.device=b.dataset.dev; localStorage.setItem('tgiw_device',state.device);
+  document.querySelectorAll('#deviceToggle button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.dev===state.device));
+  render();
+});
+document.getElementById('notesToggle').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  state.notes=b.dataset.notes; localStorage.setItem('tgiw_notes',state.notes);
+  document.querySelectorAll('#notesToggle button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.notes===state.notes));
+  render();
+});
+
+/* init pressed states */
+document.querySelectorAll('#deviceToggle button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.dev===state.device));
+document.querySelectorAll('#notesToggle button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.notes===state.notes));
+
+renderTabs();
+render();
+</script>
+</body>
+</html>
