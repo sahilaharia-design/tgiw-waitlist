@@ -228,21 +228,21 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 /* ============================
    ACT 3: THE WORLD
    ============================ */
-#act3{background:var(--night);overflow:hidden;cursor:crosshair;}
+#act3{background:var(--night);overflow:hidden;cursor:default;}
 #world-container{position:absolute;inset:0;overflow:hidden;}
 #world-stage{
-  position:absolute;top:0;left:0;
-  width:280vw;height:160vh;
-  will-change:transform;cursor:grab;
+  position:absolute;top:-20px;left:-20px;
+  width:calc(100vw + 40px);height:calc(100vh + 40px);
+  will-change:transform;
 }
-#world-stage.dragging{cursor:grabbing;}
-.world-layer{position:absolute;inset:0;will-change:transform;}
+.world-layer{position:absolute;inset:0;}
 #world-sky{
   background:url('project/uploads/TGIW Hero.png') center/cover no-repeat;
   opacity:.35;
 }
 #world-main{
-  background:url('project/uploads/TGIW World.png') center/cover no-repeat;
+  background:url('project/uploads/TGIW World.png') 18% 45%/cover no-repeat;
+  transition:background-position 1.6s var(--ec);
 }
 #world-vignette{
   position:absolute;inset:0;
@@ -252,27 +252,28 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 
 /* ZONE OVERLAYS */
 .zone-overlay{
-  position:absolute;border-radius:50%;pointer-events:none;
-  opacity:0;transition:opacity 2s ease;
+  position:absolute;inset:0;border-radius:0;pointer-events:none;
+  opacity:0;transition:opacity 1.8s ease;
   mix-blend-mode:screen;z-index:4;
 }
 .zone-overlay.active{opacity:1;}
-#zone-welcome{width:55vw;height:40vh;left:0;top:10vh;background:radial-gradient(ellipse,rgba(255,200,80,.14) 0%,transparent 70%);}
-#zone-mehndi{width:55vw;height:40vh;left:55vw;top:0;background:radial-gradient(ellipse,rgba(180,80,120,.11) 0%,transparent 70%);}
-#zone-sangeet{width:60vw;height:45vh;left:112vw;top:20vh;background:radial-gradient(ellipse,rgba(0,180,160,.12) 0%,transparent 70%);}
-#zone-haldi{width:55vw;height:40vh;left:168vw;top:5vh;background:radial-gradient(ellipse,rgba(255,220,0,.14) 0%,transparent 70%);}
-#zone-wedding{width:60vw;height:50vh;left:220vw;top:30vh;background:radial-gradient(ellipse,rgba(80,10,10,.5) 0%,transparent 70%);filter:brightness(.45);transition:opacity 2s ease,filter 2.5s ease;}
+#zone-welcome{background:radial-gradient(ellipse 85% 70% at 28% 55%,rgba(255,200,80,.22) 0%,transparent 65%);}
+#zone-mehndi{background:radial-gradient(ellipse 85% 70% at 48% 52%,rgba(180,80,120,.18) 0%,transparent 65%);}
+#zone-sangeet{background:radial-gradient(ellipse 85% 70% at 55% 55%,rgba(0,180,160,.18) 0%,transparent 65%);}
+#zone-haldi{background:radial-gradient(ellipse 85% 70% at 68% 42%,rgba(255,220,0,.2) 0%,transparent 65%);}
+#zone-wedding{background:radial-gradient(ellipse 85% 70% at 75% 58%,rgba(80,10,10,.5) 0%,transparent 65%);filter:brightness(.45);transition:opacity 2s ease,filter 2.5s ease;}
 #zone-wedding.unlocked{filter:brightness(.85);}
 
 /* DAY 5 VEIL */
 #day5-veil{
-  position:absolute;right:0;bottom:0;
-  width:60vw;height:55vh;
+  position:absolute;inset:0;
   background:rgba(13,11,8,.7);
   pointer-events:none;z-index:6;
   transition:opacity 2.5s ease;
+  opacity:0;
 }
-#day5-veil.lifted{opacity:.2;}
+#day5-veil.active{opacity:1;}
+#day5-veil.lifted{opacity:.18;}
 #day5-date{
   position:absolute;right:3vw;bottom:9vh;
   font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.3em;
@@ -284,9 +285,12 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 
 /* HOTSPOTS */
 .hotspot{
-  position:absolute;width:72px;height:72px;
+  position:fixed;width:72px;height:72px;
   transform:translate(-50%,-50%);cursor:pointer;z-index:10;
+  opacity:0;pointer-events:none;
+  transition:opacity .7s ease;
 }
+.hotspot.visible{opacity:1;pointer-events:all;}
 .h-ring{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   width:10px;height:10px;border-radius:50%;
@@ -447,16 +451,59 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 @keyframes world-text-anim{0%{opacity:0;}18%{opacity:1;}65%{opacity:1;}100%{opacity:0;}}
 
 /* MOBILE VIGNETTE DOTS */
-#vignette-dots{
-  position:fixed;bottom:54px;left:50%;transform:translateX(-50%);
-  display:none;gap:7px;z-index:35;align-items:center;
+#vignette-dots{display:none;}
+
+/* ============================
+   JOURNEY PANEL
+   ============================ */
+#journey-panel{
+  position:fixed;bottom:0;left:0;right:0;
+  padding:clamp(36px,6vh,72px) clamp(28px,6vw,80px) clamp(20px,3.5vh,32px);
+  background:linear-gradient(to top,rgba(13,11,8,.92) 0%,rgba(13,11,8,.68) 52%,transparent 100%);
+  z-index:20;pointer-events:none;
+  opacity:0;transform:translateY(28px);
+  transition:opacity .9s var(--ec),transform .9s var(--ec);
 }
-.v-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:rgba(240,232,213,.18);cursor:pointer;transition:background .3s;
+#journey-panel.vis{opacity:1;transform:none;pointer-events:all;}
+#jp-label{
+  font-family:'Space Mono',monospace;font-size:clamp(7.5px,1vw,9.5px);
+  letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,217,122,.48);margin-bottom:6px;
+}
+#jp-title{
+  font-family:'Caveat',cursive;font-weight:700;
+  font-size:clamp(30px,5vw,58px);color:var(--paper);
+  line-height:1;margin-bottom:6px;
+  transition:opacity .5s ease;
+}
+#jp-desc{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(14px,1.6vw,19px);color:rgba(240,232,213,.5);
+  margin-bottom:clamp(14px,2.5vh,22px);line-height:1.4;
+  transition:opacity .5s ease;
+}
+#jp-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+#jp-dots{display:flex;gap:7px;align-items:center;}
+.jp-dot{
+  width:6px;height:6px;border-radius:3px;
+  background:rgba(240,232,213,.18);cursor:pointer;
+  transition:background .4s ease,width .4s ease;
   pointer-events:all;
 }
-.v-dot.active{background:rgba(201,147,10,.5);}
+.jp-dot.active{width:24px;background:rgba(201,147,10,.75);}
+.jp-dot.done{background:rgba(240,232,213,.38);}
+#jp-next{
+  font-family:'Space Mono',monospace;font-size:clamp(9px,1.1vw,11.5px);
+  letter-spacing:.14em;text-transform:uppercase;
+  background:var(--paper);color:var(--ink);border:none;
+  padding:11px clamp(20px,2.8vw,32px);border-radius:100px;cursor:pointer;
+  transition:background .2s,transform .2s var(--spring),box-shadow .2s;
+  box-shadow:0 4px 22px rgba(0,0,0,.38);
+}
+#jp-next:hover{background:#e0d6c0;transform:translateY(-2px);box-shadow:0 7px 28px rgba(0,0,0,.45);}
+#jp-next:active{transform:translateY(0);}
+#jp-next.last{background:var(--red);color:var(--paper);}
+#jp-next.last:hover{background:#5a1410;}
 
 /* ============================
    ACT 4: THE ASK (OVERLAY)
@@ -750,41 +797,41 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
       <div id="day5-veil"></div>
       <div id="day5-date">October · 2026</div>
 
-      <!-- HOTSPOTS -->
-      <div class="hotspot" id="hs-bua" style="left:10%;top:12%">
+      <!-- HOTSPOTS (position:fixed viewport coordinates) -->
+      <div class="hotspot" id="hs-bua" style="left:19%;top:28%">
         <div class="h-ring"></div>
         <div class="whisper">She cried at the engagement. She'll cry for three days after.</div>
       </div>
-      <div class="hotspot" id="hs-photographer" style="left:26%;top:38%">
-        <div class="h-ring"></div>
-        <div class="whisper">She's documented 200 weddings. She still can't stay dry-eyed.</div>
-      </div>
-      <div class="hotspot" id="hs-dj" style="left:53%;top:60%">
-        <div class="h-ring"></div>
-        <div class="whisper">He started at the Sangeet. He'll finish at dawn.</div>
-      </div>
-      <div class="hotspot" id="hs-biryani" style="left:42%;top:73%">
-        <div class="h-ring"></div>
-        <div class="whisper">Day 3. This is not his first visit.</div>
-      </div>
-      <div class="hotspot" id="hs-father" style="left:18%;top:49%">
+      <div class="hotspot" id="hs-father" style="left:24%;top:65%">
         <div class="h-ring"></div>
         <div class="whisper">He planned everything. He is the only one not enjoying it.</div>
       </div>
-      <div class="hotspot" id="hs-kids" style="left:72%;top:15%">
+      <div class="hotspot" id="hs-photographer" style="left:42%;top:40%">
         <div class="h-ring"></div>
-        <div class="whisper">They know where the extra mithai is hidden. No one else does.</div>
+        <div class="whisper">She's documented 200 weddings. She still can't stay dry-eyed.</div>
       </div>
-      <div class="hotspot" id="hs-elephant" style="left:82%;top:22%">
+      <div class="hotspot" id="hs-dj" style="left:64%;top:58%">
         <div class="h-ring"></div>
-        <div class="whisper">Look closely. Does it blink?</div>
+        <div class="whisper">He started at the Sangeet. He'll finish at dawn.</div>
       </div>
-      <div class="hotspot" id="hs-couple" style="left:50%;top:44%">
+      <div class="hotspot" id="hs-biryani" style="left:38%;top:70%">
+        <div class="h-ring"></div>
+        <div class="whisper">Day 3. This is not his first visit.</div>
+      </div>
+      <div class="hotspot" id="hs-couple" style="left:52%;top:42%">
         <div class="h-ring"></div>
         <div id="couple-ring"></div>
         <div class="whisper">Five days. Sixty opinions. One decision.</div>
       </div>
-      <div class="hotspot" id="hs-founding" style="left:96%;top:50%">
+      <div class="hotspot" id="hs-kids" style="left:70%;top:22%">
+        <div class="h-ring"></div>
+        <div class="whisper">They know where the extra mithai is hidden. No one else does.</div>
+      </div>
+      <div class="hotspot" id="hs-elephant" style="left:80%;top:38%">
+        <div class="h-ring"></div>
+        <div class="whisper">Look closely. Does it blink?</div>
+      </div>
+      <div class="hotspot" id="hs-founding" style="left:74%;top:48%">
         <div class="h-ring"></div>
         <div class="whisper">Not part of the wedding. Watching. Waiting.</div>
       </div>
@@ -794,6 +841,23 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
   </div>
 
   <div id="world-text"><p>The wedding is already happening.</p></div>
+
+  <!-- JOURNEY PANEL -->
+  <div id="journey-panel">
+    <div id="jp-label">Day 01 · Dubai 2026</div>
+    <div id="jp-title">Welcome Dinner</div>
+    <p id="jp-desc">The families meet. The politeness is remarkable.</p>
+    <div id="jp-bottom">
+      <div id="jp-dots">
+        <div class="jp-dot active" data-i="0"></div>
+        <div class="jp-dot" data-i="1"></div>
+        <div class="jp-dot" data-i="2"></div>
+        <div class="jp-dot" data-i="3"></div>
+        <div class="jp-dot" data-i="4"></div>
+      </div>
+      <button id="jp-next" type="button">Continue →</button>
+    </div>
+  </div>
 
   <div id="hud">
     <div id="hud-mark">TG·I·W</div>
@@ -895,7 +959,7 @@ let tier = 'Guest List';
 const isMobile = ('ontouchstart' in window) || window.innerWidth < 769;
 let soundOn = false;
 let actx = null;
-let ambiNode = null, ambiGain = null;
+let journeyDay = 0;
 
 /* MEMORY */
 const disc = new Set(JSON.parse(localStorage.getItem('tgiw-d') || '[]'));
@@ -968,82 +1032,109 @@ document.getElementById('ir-enter').addEventListener('click', startAct3);
 document.getElementById('ir-enter').addEventListener('touchend', e => { e.preventDefault(); startAct3(); }, {passive:false});
 
 /* ── ACT 3 ── */
-let wx=0, wy=0, twx=0, twy=0, drag=false, dsx,dsy,wsx,wsy;
-let wAnim=false, curZone='', coupleT=null;
+let coupleT=null;
 const ws = document.getElementById('world-stage');
-const ZONES = { welcome:[0,.2], mehndi:[.2,.42], sangeet:[.42,.63], haldi:[.63,.82], wedding:[.82,1] };
-const ZNAMES = { welcome:'Welcome Dinner', mehndi:'Mehndi', sangeet:'Sangeet', haldi:'Haldi', wedding:'The Wedding' };
 
-function startAct3() {
-  if (act !== 2) return;
-  goAct(3);
-  initWorld();
-  periodicFW();
-  setTimeout(() => {
-    if (act===3) document.getElementById('hud-rsvp-btn').classList.add('vis');
-  }, 90000);
-}
+const JOURNEY = [
+  { label:'Day 01', name:'Welcome Dinner', desc:'The families meet. The politeness is remarkable.', bgPos:'18% 45%', zone:'welcome', hotspots:['hs-bua','hs-father'] },
+  { label:'Day 02', name:'Mehndi', desc:'The henna knows things. Everyone talks.', bgPos:'36% 52%', zone:'mehndi', hotspots:['hs-photographer'] },
+  { label:'Day 03', name:'Sangeet', desc:"Nobody stays in their seat. Nobody tries to.", bgPos:'52% 46%', zone:'sangeet', hotspots:['hs-dj','hs-biryani','hs-couple'] },
+  { label:'Day 04', name:'Haldi', desc:'The morning of turmeric. The one that stains.', bgPos:'72% 36%', zone:'haldi', hotspots:['hs-kids','hs-elephant'] },
+  { label:'Day 05', name:'— — —', desc:"You're not on the list for this one. Yet.", bgPos:'88% 56%', zone:'wedding', hotspots:['hs-founding'], locked:true }
+];
 
-function initWorld() {
-  const vw=innerWidth, vh=innerHeight;
-  const sw=ws.offsetWidth, sh=ws.offsetHeight;
-  twx = -(sw-vw)/2; twy = -(sh-vh)/2;
-  wx=twx; wy=twy;
-  ws.style.transform = `translate(${wx}px,${wy}px)`;
-  if (!wAnim) { wAnim=true; animWorld(); }
+function goJourney(i) {
+  if (i < 0 || i >= JOURNEY.length) return;
+  journeyDay = i;
+  const beat = JOURNEY[i];
 
-  if (isMobile) { setupSwipe(); return; }
+  // Shift background position (CSS transition handles smoothness)
+  document.getElementById('world-main').style.backgroundPosition = beat.bgPos;
+  document.getElementById('world-sky').style.backgroundPosition = beat.bgPos;
 
-  ws.addEventListener('pointerdown', e => {
-    drag=true; dsx=e.clientX; dsy=e.clientY; wsx=twx; wsy=twy;
-    ws.classList.add('dragging'); ws.setPointerCapture(e.pointerId);
-  });
-  ws.addEventListener('pointermove', e => {
-    if (!drag) return;
-    twx = clamp(wsx+e.clientX-dsx, -(ws.offsetWidth-innerWidth), 0);
-    twy = clamp(wsy+e.clientY-dsy, -(ws.offsetHeight-innerHeight), 0);
-  });
-  ws.addEventListener('pointerup', () => { drag=false; ws.classList.remove('dragging'); });
-  document.addEventListener('mousemove', edgePan);
-}
+  // Zone overlay
+  document.querySelectorAll('.zone-overlay').forEach(el => el.classList.remove('active'));
+  const zo = document.getElementById('zone-' + beat.zone);
+  if (zo) zo.classList.add('active');
+  showZone(beat.name === '— — —' ? 'Day 5' : beat.name);
 
-function edgePan(e) {
-  if (act!==3||drag) return;
-  const M=80, S=2.8, vw=innerWidth, vh=innerHeight;
-  let dx=0, dy=0;
-  if (e.clientX<M) dx=S*(1-e.clientX/M);
-  else if (e.clientX>vw-M) dx=-S*((e.clientX-(vw-M))/M);
-  if (e.clientY<M) dy=S*(1-e.clientY/M);
-  else if (e.clientY>vh-M) dy=-S*((e.clientY-(vh-M))/M);
-  if (dx||dy) {
-    twx=clamp(twx+dx,-(ws.offsetWidth-innerWidth),0);
-    twy=clamp(twy+dy,-(ws.offsetHeight-innerHeight),0);
+  // Day 5 veil
+  const veil = document.getElementById('day5-veil');
+  if (i === 4) {
+    veil.classList.add('active');
+    if (disc.size >= 5) veil.classList.add('lifted');
+  } else {
+    veil.classList.remove('active', 'lifted');
   }
-}
 
-function animWorld() {
-  wx+=(twx-wx)*.076; wy+=(twy-wy)*.076;
-  ws.style.transform=`translate(${wx.toFixed(2)}px,${wy.toFixed(2)}px)`;
-  const sw=ws.offsetWidth; if(sw){
-    const rx=-wx/Math.max(sw-innerWidth,1);
-    document.getElementById('world-sky').style.transform=`translateX(${rx*-22}px)`;
-    checkZone(rx);
+  // Journey panel text
+  const isLocked = beat.locked && disc.size < 5;
+  document.getElementById('jp-label').textContent = beat.label + ' · Dubai 2026';
+  document.getElementById('jp-title').textContent = isLocked ? '— — —' : beat.name;
+  document.getElementById('jp-desc').textContent = isLocked ? "You're not on the list for this one. Yet." : beat.desc;
+
+  // Dots
+  document.querySelectorAll('.jp-dot').forEach((d, j) => {
+    d.classList.toggle('active', j === i);
+    d.classList.toggle('done', j < i);
+  });
+
+  // Next button
+  const btn = document.getElementById('jp-next');
+  if (i === JOURNEY.length - 1) {
+    btn.textContent = 'Accept your invitation ✦';
+    btn.classList.add('last');
+  } else {
+    btn.textContent = 'Continue →';
+    btn.classList.remove('last');
   }
-  requestAnimationFrame(animWorld);
+
+  // Show hotspots for this day only
+  document.querySelectorAll('.hotspot').forEach(h => {
+    h.classList.toggle('visible', beat.hotspots.includes(h.id));
+  });
+
+  if (i > 0) chime(310 + i * 45, 0.12, 0.55);
 }
 
 function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
 
-function checkZone(rx) {
-  let z='welcome';
-  for (const [k,[lo,hi]] of Object.entries(ZONES)) { if(rx>=lo&&rx<hi){z=k;break;} }
-  if (z!==curZone) {
-    curZone=z;
-    document.querySelectorAll('.zone-overlay').forEach(el=>el.classList.remove('active'));
-    const zo=document.getElementById('zone-'+z); if(zo) zo.classList.add('active');
-    showZone(ZNAMES[z]);
-    if(soundOn) zoneSound(z);
+function startAct3() {
+  if (act !== 2) return;
+  goAct(3);
+
+  // Subtle mouse parallax (±15px, no world travel)
+  let ppx=0.5, ppy=0.5, tppx=0.5, tppy=0.5, praf=false;
+  document.addEventListener('mousemove', e => {
+    if (act !== 3 && act !== 4) return;
+    tppx = e.clientX / innerWidth;
+    tppy = e.clientY / innerHeight;
+    if (!praf) { praf=true; parallaxTick(); }
+  });
+  function parallaxTick() {
+    ppx += (tppx-ppx)*0.065; ppy += (tppy-ppy)*0.065;
+    ws.style.transform = `translate(${(ppx-0.5)*-16}px,${(ppy-0.5)*-11}px)`;
+    if (Math.abs(tppx-ppx)>0.0008 || Math.abs(tppy-ppy)>0.0008) requestAnimationFrame(parallaxTick);
+    else praf=false;
   }
+
+  // Mobile: swipe left/right to advance journey
+  if (isMobile) {
+    let tstart=0;
+    document.getElementById('act3').addEventListener('touchstart', e => { tstart=e.touches[0].clientX; },{passive:true});
+    document.getElementById('act3').addEventListener('touchend', e => {
+      const dx=e.changedTouches[0].clientX-tstart;
+      if (Math.abs(dx)>44) { if(dx<0) goJourney(Math.min(journeyDay+1,JOURNEY.length-1)); else goJourney(Math.max(journeyDay-1,0)); }
+    },{passive:true});
+  }
+
+  goJourney(0);
+
+  // Show journey panel after world-text fades
+  setTimeout(() => { if(act===3||act===4) document.getElementById('journey-panel').classList.add('vis'); }, 1600);
+
+  periodicFW();
+  setTimeout(() => { if(act===3) document.getElementById('hud-rsvp-btn').classList.add('vis'); }, 90000);
 }
 
 function showZone(name) {
@@ -1051,6 +1142,15 @@ function showZone(name) {
   h.textContent=name; h.classList.add('vis');
   clearTimeout(h._t); h._t=setTimeout(()=>h.classList.remove('vis'),2600);
 }
+
+/* JOURNEY NAV */
+document.getElementById('jp-next').addEventListener('click', () => {
+  if (journeyDay === JOURNEY.length - 1) triggerRSVP();
+  else goJourney(journeyDay + 1);
+});
+document.querySelectorAll('.jp-dot').forEach(d => {
+  d.addEventListener('click', () => goJourney(parseInt(d.dataset.i)));
+});
 
 /* HOTSPOTS */
 function discover(id) {
@@ -1141,40 +1241,12 @@ function liftDay5() {
   document.getElementById('day5-veil').classList.add('lifted');
   document.getElementById('day5-date').classList.add('vis');
   document.getElementById('zone-wedding').classList.add('unlocked');
+  if (journeyDay === 4) {
+    document.getElementById('jp-title').textContent = 'The Wedding';
+    document.getElementById('jp-desc').textContent = 'October 2026 · Dubai. Five days of ceremony.';
+  }
 }
 
-/* MOBILE SWIPE */
-const VIG=[
-  {x:5,y:30,label:'Arrival'},{x:18,y:28,label:'Welcome Dinner'},
-  {x:38,y:42,label:'Mehndi'},{x:50,y:38,label:'The Couple'},
-  {x:55,y:58,label:'Sangeet'},{x:70,y:18,label:'Rooftop'},
-  {x:80,y:35,label:'Haldi'},{x:94,y:46,label:'The Wedding'},
-];
-let cv=0, tsx=0;
-function setupSwipe() {
-  const dots=document.getElementById('vignette-dots');
-  VIG.forEach((_,i)=>{ const d=document.createElement('div'); d.className='v-dot'+(i===0?' active':''); d.onclick=()=>goVig(i); dots.appendChild(d); });
-  goVig(0);
-  document.getElementById('act3').addEventListener('touchstart',e=>{ tsx=e.touches[0].clientX; },{passive:true});
-  document.getElementById('act3').addEventListener('touchend',e=>{
-    const dx=e.changedTouches[0].clientX-tsx;
-    if(Math.abs(dx)>44) { if(dx<0) goVig(Math.min(cv+1,VIG.length-1)); else goVig(Math.max(cv-1,0)); }
-  },{passive:true});
-  window.addEventListener('deviceorientation',e=>{
-    if(act!==3) return;
-    const tx=clamp((e.gamma||0)*1.4,-18,18);
-    const ty=clamp((e.beta||0)*.7-25,-18,18);
-    document.getElementById('world-main').style.transform=`translate(${tx}px,${ty}px)`;
-  });
-}
-function goVig(i) {
-  cv=i; const v=VIG[i];
-  document.getElementById('world-main').style.backgroundPosition=`${v.x}% ${v.y}%`;
-  document.getElementById('world-sky').style.backgroundPosition=`${v.x}% ${v.y}%`;
-  document.querySelectorAll('.v-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
-  showZone(v.label);
-  if(i===3&&disc.size>=3) triggerRSVP();
-}
 
 /* PERIODIC WORLD FIREWORKS */
 function periodicFW() {
@@ -1294,34 +1366,6 @@ function noiseBurst() {
   g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.08);
   s.connect(g); g.connect(actx.destination); s.start();
 }
-function startAmbi() {
-  if(!soundOn||!actx||ambiNode) return;
-  ambiNode=actx.createScriptProcessor(4096,1,1);
-  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
-  ambiNode.onaudioprocess=e=>{
-    const o=e.outputBuffer.getChannelData(0);
-    for(let i=0;i<4096;i++){
-      const w=Math.random()*2-1;
-      b0=.99886*b0+w*.0555179; b1=.99332*b1+w*.0750759;
-      b2=.9690*b2+w*.153852; b3=.8665*b3+w*.3104856;
-      b4=.55*b4+w*.5329522; b5=-.7616*b5-w*.016898;
-      o[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.025; b6=w*.115926;
-    }
-  };
-  ambiGain=actx.createGain(); ambiGain.gain.setValueAtTime(0,actx.currentTime);
-  ambiGain.gain.linearRampToValueAtTime(.12,actx.currentTime+3);
-  ambiNode.connect(ambiGain); ambiGain.connect(actx.destination);
-}
-function stopAmbi() {
-  if(!ambiGain) return;
-  ambiGain.gain.linearRampToValueAtTime(0,actx.currentTime+1.5);
-  setTimeout(()=>{ try{ambiNode.disconnect();ambiGain.disconnect();}catch(e){} ambiNode=ambiGain=null; },2000);
-}
-const ZF={welcome:180,mehndi:220,sangeet:440,haldi:330,wedding:110};
-function zoneSound(z) {
-  if(!soundOn||!actx) return;
-  chime(ZF[z]||220,.08,4);
-}
 function rsvpSound() {
   if(!soundOn||!actx) return;
   [523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>chime(f,.3,.8),i*190));
@@ -1329,8 +1373,7 @@ function rsvpSound() {
 document.getElementById('hud-sound').addEventListener('click',()=>{
   soundOn=!soundOn;
   document.getElementById('hud-sound').textContent=soundOn?'♪ sound on':'♪ sound off';
-  if(soundOn){ initAudio(); if(act===3) startAmbi(); }
-  else stopAmbi();
+  if(soundOn) initAudio();
 });
 ['click','touchend','keydown'].forEach(ev=>document.addEventListener(ev,()=>{ if(soundOn&&!actx) initAudio(); },{once:true}));
 
