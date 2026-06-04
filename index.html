@@ -117,17 +117,28 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 #act2.on{opacity:1;}
 #envelope-wrap{
   position:relative;
-  width:min(480px,88vw);height:min(580px,78vh);
+  width:100vw;height:100vh;
   display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
 }
 #envelope-img{
-  width:100%;height:100%;object-fit:contain;
-  filter:brightness(.82);transition:filter .7s ease;
+  /* Fill the screen — crop sides rather than letterbox */
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  filter:brightness(.75) saturate(.92);
+  transition:filter .7s ease;
 }
-#envelope-wrap:hover #envelope-img{filter:brightness(.96);}
+#envelope-wrap:hover #envelope-img{filter:brightness(.88) saturate(1);}
+/* dark gradient at bottom so seal + hint are readable */
+#envelope-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(13,11,8,.1) 50%,rgba(13,11,8,.72) 100%);
+  pointer-events:none;z-index:1;
+}
 #wax-seal{
-  position:absolute;bottom:22%;left:50%;
+  position:absolute;bottom:18%;left:50%;
   transform:translateX(-50%);
+  z-index:3;
   width:62px;height:62px;border-radius:50%;
   background:radial-gradient(circle at 35% 35%,#edc040,#c9930a 55%,#7a4800 100%);
   display:flex;align-items:center;justify-content:center;
@@ -147,55 +158,70 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 @keyframes seal-ring{0%{transform:scale(1);opacity:.6;}100%{transform:scale(1.48);opacity:0;}}
 #wax-seal-inner{font-size:20px;color:rgba(0,0,0,.38);font-family:'Caveat',cursive;font-weight:700;}
 #act2-hint{
+  position:relative;z-index:4;
   margin-top:18px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.28em;
-  text-transform:uppercase;color:rgba(255,217,122,.28);
+  text-transform:uppercase;color:rgba(255,217,122,.35);
   opacity:0;animation:fade 1s ease 1.6s forwards;
 }
+/* Full-screen invitation card reveal */
 #invite-reveal{
-  position:absolute;inset:0;border-radius:14px;
+  position:fixed;inset:0;z-index:10;
   background:var(--paper);
   display:flex;align-items:center;justify-content:center;
-  flex-direction:column;padding:36px 28px;
-  opacity:0;transform:scale(.93);
-  transition:opacity .9s var(--ec) .25s,transform .9s var(--ec) .25s;
+  opacity:0;transform:scale(.97);
+  transition:opacity .9s var(--ec) .2s,transform 1s var(--ec) .2s;
   pointer-events:none;
+  /* Aged paper texture via CSS */
+  background-image:
+    radial-gradient(ellipse 120% 80% at 60% 40%,rgba(201,147,10,.04) 0%,transparent 70%),
+    radial-gradient(ellipse 80% 120% at 30% 70%,rgba(122,28,24,.03) 0%,transparent 60%);
 }
 #invite-reveal.open{opacity:1;transform:scale(1);pointer-events:all;}
+/* Decorative border card centred on the page */
 .ir-border{
-  width:100%;height:100%;border:1.5px solid rgba(184,168,152,.35);border-radius:9px;
-  padding:28px 20px;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:12px;text-align:center;
+  width:min(560px,84vw);
+  border:1.5px solid rgba(184,168,152,.4);border-radius:12px;
+  padding:clamp(32px,5vh,56px) clamp(28px,5vw,56px);
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(10px,1.6vh,16px);text-align:center;
+  background:var(--paper);
+  box-shadow:0 0 0 8px rgba(184,168,152,.1), 0 40px 80px rgba(26,22,18,.12);
 }
 .ir-eyebrow{
-  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.36em;
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.38em;
   text-transform:uppercase;color:var(--red);
 }
 .ir-hl{
   font-family:'Caveat',cursive;font-weight:700;
-  font-size:clamp(28px,4.5vw,46px);color:var(--ink);line-height:1;
+  font-size:clamp(36px,5.5vw,60px);color:var(--ink);line-height:1;
 }
 .ir-sub{
   font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:15px;color:var(--ink-soft);
+  font-size:clamp(15px,1.8vw,19px);color:var(--ink-soft);letter-spacing:.02em;
 }
-.ir-days{display:flex;flex-direction:column;gap:3px;width:100%;}
+/* Thin gold rule */
+.ir-rule{width:48px;height:1px;background:var(--gold);opacity:.5;}
+.ir-days{display:flex;flex-direction:column;gap:2px;width:100%;max-width:340px;}
 .ir-day{
-  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;
+  font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--ink-soft);
-  display:flex;align-items:center;gap:10px;padding:4px 0;
-  border-bottom:1px solid rgba(184,168,152,.18);
+  display:flex;align-items:center;gap:12px;padding:5px 0;
+  border-bottom:1px solid rgba(184,168,152,.15);
 }
-.ir-day span:first-child{color:var(--gold);min-width:44px;}
+.ir-day span:first-child{color:var(--gold);min-width:48px;flex-shrink:0;}
+.ir-day.day5{opacity:.45;}
 .ir-day.day5 span:last-child{
-  color:transparent;background:rgba(184,168,152,.28);
-  border-radius:2px;font-size:6px;
+  display:inline-block;width:80px;height:6px;
+  background:rgba(184,168,152,.4);border-radius:2px;font-size:0;
 }
 .ir-cta{
-  margin-top:6px;font-family:'Space Mono',monospace;font-size:9.5px;
-  letter-spacing:.14em;text-transform:uppercase;
+  margin-top:clamp(4px,1vh,10px);
+  font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;
   background:var(--red);color:var(--paper);border:none;
-  padding:12px 26px;border-radius:100px;cursor:pointer;
+  padding:14px 34px;border-radius:100px;cursor:pointer;
   transition:background .2s,transform .2s var(--spring);
+  box-shadow:0 4px 16px rgba(122,28,24,.25);
 }
 .ir-cta:hover{background:#5a1410;transform:translateY(-2px);}
 
@@ -438,12 +464,20 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
 #act4-overlay{
   align-items:center;justify-content:center;z-index:40;
   background:transparent;pointer-events:none;
+  transition:background .8s ease;
 }
-#act4-overlay.on{pointer-events:all;}
+#act4-overlay.on{
+  pointer-events:all;
+  background:rgba(13,11,8,.78);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+}
 #act4-card{
-  width:100%;max-width:530px;padding:20px;
-  max-height:100vh;overflow-y:auto;
+  width:100%;max-width:560px;padding:clamp(12px,3vw,24px);
+  max-height:100svh;overflow-y:auto;
+  /* scrollbar hidden but functional */
+  scrollbar-width:none;
 }
+#act4-card::-webkit-scrollbar{display:none;}
 #act4-close{
   position:fixed;top:18px;right:22px;
   background:none;border:none;cursor:pointer;
@@ -685,6 +719,7 @@ body[data-act="5"] #flame{opacity:0!important;pointer-events:none;}
         <p class="ir-eyebrow">Cordially Invited</p>
         <h1 class="ir-hl">The Great Indian Wedding</h1>
         <p class="ir-sub">Dubai · October 2026</p>
+        <div class="ir-rule"></div>
         <div class="ir-days">
           <div class="ir-day"><span>Day 01</span><span>Welcome Dinner</span></div>
           <div class="ir-day"><span>Day 02</span><span>Mehndi</span></div>
@@ -1162,7 +1197,6 @@ function periodicFW() {
 function triggerRSVP() {
   if(act===4||act===5) return;
   goAct(4);
-  ws.style.transition='filter .85s ease'; ws.style.filter='blur(2.5px) brightness(.4)';
   document.getElementById('act4-overlay').classList.add('on');
   document.getElementById('act4-close').classList.add('vis');
   setTimeout(()=>document.getElementById('place-card').classList.add('vis'),80);
@@ -1171,7 +1205,6 @@ function dismissRSVP() {
   document.getElementById('act4-overlay').classList.remove('on');
   document.getElementById('act4-close').classList.remove('vis');
   document.getElementById('place-card').classList.remove('vis');
-  ws.style.filter='';
   goAct(3);
   setTimeout(()=>document.getElementById('hud-rsvp-btn').classList.add('vis'),800);
 }
@@ -1217,7 +1250,6 @@ document.getElementById('rsvp-form').addEventListener('submit', e => {
     : `Your seat is held, <span id="s-name">${n}</span>. Dubai, October 2026.`;
   goAct(5);
   document.getElementById('act4-overlay').classList.remove('on');
-  ws.style.filter='';
   setTimeout(fireFireworks,520);
   setTimeout(()=>document.getElementById('act5-bg').classList.add('lit'),850);
   rsvpSound();
